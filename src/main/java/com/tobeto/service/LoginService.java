@@ -17,7 +17,7 @@ public class LoginService {
 	public String login(String email, String password) {
 		Optional<User> oUser = userService.getUserByEmail(email);
 		if (oUser.isPresent() && oUser.get().getPassword().equals(password)) {
-			String token = tokenService.createToken(email);
+			String token = tokenService.createToken(oUser.get());
 			return token;
 		} else {
 			throw new RuntimeException("Login Error");
@@ -28,7 +28,7 @@ public class LoginService {
 		User user = new User();
 		user.setEmail(email);
 		user.setPassword(password);
-		userService.createUser(user);
-		return tokenService.createToken(email);
+		user = userService.createUser(user);
+		return tokenService.createToken(user);
 	}
 }

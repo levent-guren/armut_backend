@@ -10,6 +10,8 @@ import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.NamedQuery;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 /**
  * The persistent class for the role database table.
@@ -18,6 +20,8 @@ import lombok.Data;
 @Entity
 @NamedQuery(name = "Role.findAll", query = "SELECT r FROM Role r")
 @Data
+@ToString(exclude = "user")
+@EqualsAndHashCode(exclude = "user")
 public class Role implements Serializable {
 	private static final long serialVersionUID = 1L;
 	@Id
