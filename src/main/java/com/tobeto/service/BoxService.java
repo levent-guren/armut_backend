@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.tobeto.entity.Box;
+import com.tobeto.exception.ServiceException;
+import com.tobeto.exception.ServiceException.ERROR_CODES;
 import com.tobeto.repository.BoxRepository;
 
 @Service
@@ -31,13 +33,25 @@ public class BoxService {
 	}
 
 	public void deleteBox(int id) {
-		boxRepository.deleteById(id);
+		Optional<Box> oBox = boxRepository.findById(id);
+		if (oBox.isPresent()) {
+			Box box = oBox.get();
+			if (box.getCount() > 0) {
+				throw new ServiceException(ERROR_CODES.BOX_HAS_FRUITS);
+			}
+			boxRepository.deleteById(id);
+		} else {
+			throw new ServiceException(ERROR_CODES.BOX_NOT_FOUND);
+		}
 	}
 
 	public void updateBox(int id, int capacity) {
 		Optional<Box> oBox = boxRepository.findById(id);
 		if (oBox.isPresent()) {
 			Box box = oBox.get();
+			if (capacity < box.getCount()) {
+				throw new ServiceException(ERROR_CODES.SET_BOX_COUNT);
+			}
 			box.setCapacity(capacity);
 			boxRepository.save(box);
 		}

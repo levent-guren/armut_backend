@@ -6,15 +6,18 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.tobeto.dto.CreateFruitRequestDTO;
-import com.tobeto.dto.DeleteFruitRequestDTO;
-import com.tobeto.dto.FruitResponseDTO;
 import com.tobeto.dto.SuccessResponseDTO;
+import com.tobeto.dto.fruit.AcceptFruitRequestDTO;
+import com.tobeto.dto.fruit.CreateFruitRequestDTO;
+import com.tobeto.dto.fruit.DeleteFruitRequestDTO;
+import com.tobeto.dto.fruit.FruitCountResponseDTO;
+import com.tobeto.dto.fruit.FruitResponseDTO;
 import com.tobeto.entity.Fruit;
 import com.tobeto.service.FruitService;
 
@@ -44,9 +47,27 @@ public class FruitController {
 		return new SuccessResponseDTO();
 	}
 
+	@PostMapping("/accept")
+	public SuccessResponseDTO acceptFruit(@RequestBody AcceptFruitRequestDTO dto) {
+		fruitService.acceptFruit(dto.getFruitId(), dto.getCount());
+		return new SuccessResponseDTO();
+	}
+
+	@PostMapping("/sale")
+	public SuccessResponseDTO saleFruit(@RequestBody AcceptFruitRequestDTO dto) {
+		fruitService.saleFruit(dto.getFruitId(), dto.getCount());
+		return new SuccessResponseDTO();
+	}
+
 	@GetMapping("/")
 	public List<FruitResponseDTO> getAllFruits() {
 		List<Fruit> fruits = fruitService.getAllFruits();
 		return fruits.stream().map(f -> responseMapper.map(f, FruitResponseDTO.class)).toList();
+	}
+
+	@GetMapping("/count/{fruitId}")
+	public FruitCountResponseDTO getFruitCount(@PathVariable int fruitId) {
+		int count = fruitService.getFruitCount(fruitId);
+		return new FruitCountResponseDTO(count);
 	}
 }

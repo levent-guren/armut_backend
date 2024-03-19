@@ -11,11 +11,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.tobeto.dto.BoxResponseDTO;
-import com.tobeto.dto.CreateBoxRequestDTO;
-import com.tobeto.dto.DeleteBoxRequestDTO;
 import com.tobeto.dto.SuccessResponseDTO;
-import com.tobeto.dto.UpdateBoxRequestDTO;
+import com.tobeto.dto.box.BoxResponseDTO;
+import com.tobeto.dto.box.CreateBoxRequestDTO;
+import com.tobeto.dto.box.DeleteBoxRequestDTO;
+import com.tobeto.dto.box.UpdateBoxRequestDTO;
 import com.tobeto.entity.Box;
 import com.tobeto.service.BoxService;
 

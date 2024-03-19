@@ -20,4 +20,13 @@ public class GlobalExceptionHandler {
 		dto.setMesaj("Hata oluştu");
 		return ResponseEntity.internalServerError().body(dto);
 	}
+
+	@ExceptionHandler(ServiceException.class)
+	public ResponseEntity<GlobalExceptionDTO> serviceException(ServiceException ex) {
+		log.error(ex);
+		GlobalExceptionDTO dto = new GlobalExceptionDTO();
+		dto.setCode(ex.getCode());
+		dto.setMesaj(ex.getMessage());
+		return ResponseEntity.internalServerError().body(dto);
+	}
 }
